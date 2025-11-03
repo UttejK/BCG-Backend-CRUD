@@ -4,6 +4,12 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 class Product(models.Model):
+
+    class Status(models.TextChoices):
+        ACTIVE = "ACTIVE", "Active"
+        INACTIVE = "INACTIVE", "Inactive"
+        DISCONTINUED = "DISCONTINUED", "Discontinued"
+
     product_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, null=False)
     description = models.TextField(null=True, blank=True)
@@ -15,9 +21,12 @@ class Product(models.Model):
     customer_rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
-    demand_forecast = models.IntegerField()
+    demand_forecast = models.IntegerField(null=True, blank=True)
     optimized_price = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    status = models.CharField(
+        max_length=20, choices=Status.choices, default=Status.ACTIVE
     )
 
     def __str__(self):
