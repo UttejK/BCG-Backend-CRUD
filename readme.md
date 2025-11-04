@@ -17,14 +17,6 @@ python manage.py runserver
 python manage.py makemigrations
 python manage.py migrate
 
-# create superuser
-python manage.py createsuperuser
-
-# Next step, use django admin, create groups and users and assign them to the groups
-
-# bootstrap groups + perms (optional)
-python manage.py bootstrap_rbac
-
 # convert the csv data into json format (creating a fixture)
 python preprocess_csv_json.py
 
