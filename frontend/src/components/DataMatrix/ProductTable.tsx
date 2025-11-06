@@ -11,6 +11,7 @@ import { useProducts } from "@/hooks/useProduct";
 import type { Product } from "@/lib/types";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import ProductFormModal from "./ProductFormModal";
+import { Button } from "../ui/button";
 
 // --- small format helpers ---
 const fmtCurrency = (n?: number | null) =>
@@ -19,8 +20,14 @@ const fmtNumber = (n?: number | null) =>
   n == null ? "-" : Number(n).toLocaleString();
 
 export default function ProductTable() {
-  const { products, loading, error, deleteProduct, updateProduct } =
-    useProducts();
+  const {
+    products,
+    loading,
+    error,
+    deleteProduct,
+    updateProduct,
+    createProduct,
+  } = useProducts();
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState<Product | null>(null);
 
@@ -123,6 +130,14 @@ export default function ProductTable() {
 
   return (
     <div className="overflow-x-auto rounded-lg border">
+      <Button
+        onClick={() => {
+          setProduct(null);
+          setOpen(true);
+        }}
+      >
+        Add Product
+      </Button>
       <Table className="[&_th]:whitespace-nowrap">
         <TableHeader>
           <TableRow>
@@ -236,6 +251,10 @@ export default function ProductTable() {
         onOpenChange={(prev) => setOpen(prev)}
         onSubmit={(data) => {
           if (product) updateProduct(product.product_id!, data);
+
+          createProduct(data);
+
+          setOpen(false);
         }}
       />
     </div>
