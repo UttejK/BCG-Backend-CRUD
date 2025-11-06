@@ -19,7 +19,10 @@ const fmtNumber = (n?: number | null) =>
   n == null ? "-" : Number(n).toLocaleString();
 
 export default function ProductTable() {
-  const { products, loading, error } = useProducts();
+  const { products, loading, error, deleteProduct, updateProduct } =
+    useProducts();
+  const [open, setOpen] = useState(false);
+  const [product, setProduct] = useState<Product | null>(null);
 
   // selection (checkboxes)
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -179,16 +182,23 @@ export default function ProductTable() {
                     <Eye className="h-4 w-4" />
                   </button>
                   <button
-                    className="p-1 hover:opacity-80"
+                    className="p-1 hover:opacity-80 cursor-pointer"
                     title="Edit"
-                    onClick={() => console.log("edit", p.product_id)}
+                    onClick={() => {
+                      setOpen(true);
+                      setProduct(p);
+                    }}
                   >
                     <Pencil className="h-4 w-4" />
                   </button>
                   <button
-                    className="p-1 hover:text-destructive"
+                    className="p-1 hover:text-destructive cursor-pointer"
                     title="Delete"
-                    onClick={() => console.log("delete", p.product_id)}
+                    onClick={() =>
+                      confirm(
+                        "Are you sure you want to delete this product?"
+                      ) && deleteProduct(p.product_id!)
+                    }
                   >
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </button>
@@ -220,7 +230,14 @@ export default function ProductTable() {
           )}
         </TableBody>
       </Table>
-      <ProductFormModal product_id={1} />
+      <ProductFormModal
+        product={product ?? undefined}
+        open={open}
+        onOpenChange={(prev) => setOpen(prev)}
+        onSubmit={(data) => {
+          if (product) updateProduct(product.product_id!, data);
+        }}
+      />
     </div>
   );
 }

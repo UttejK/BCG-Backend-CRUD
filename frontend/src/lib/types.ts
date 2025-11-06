@@ -11,7 +11,7 @@ export const ProductSchema = z.object({
   category: z.string().min(1),
   stock_available: z.number().int().nonnegative().default(0),
   units_sold: z.number().int().nonnegative().default(0),
-  customer_rating: z.number().min(1).max(5).default(3),
+  customer_rating: z.number().min(1).max(5).optional(),
   demand_forecast: z.number().int().nonnegative().optional(),
   optimized_price: z.number().nonnegative().optional(),
   status: z.enum(["ACTIVE", "INACTIVE", "DISCONTINUED"]).default("ACTIVE"),
