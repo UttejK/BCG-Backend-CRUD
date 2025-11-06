@@ -3,7 +3,7 @@ import axiosClient from "./axiosClient";
 
 export const productClient = {
   getProducts: () => axiosClient.get("/products/"),
-  getProductById: (id: number) => axiosClient.get(`/products/${id}/`),
+  getProductById: (id: number) => axiosClient.get(`/products/${id}`),
   createProduct: (data: Product) => axiosClient.post("/products/", data),
   updateProduct: (id: number, data: Product) =>
     axiosClient.put(`/products/${id}/`, data),

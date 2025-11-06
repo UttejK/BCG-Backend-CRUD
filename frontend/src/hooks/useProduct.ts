@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { productClient } from "@/api/productClient";
 import type { Product } from "@/lib/types";
 import type { AxiosError } from "axios";
@@ -8,7 +8,7 @@ export function useProducts() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       const res = await productClient.getProducts();
@@ -19,7 +19,7 @@ export function useProducts() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const createProduct = async (data: Product) => {
     setLoading(true);
@@ -75,7 +75,7 @@ export function useProducts() {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
 
   return {
     products,
